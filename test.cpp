@@ -56,3 +56,5 @@ void CreateGraph(AdjGraph *G)
         G->vexlist[head].firstedge=p;
     }
 }
+//bc
+
