@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include<stdio.h>
 #include<stdlib.h>
 #define MAX 100
@@ -57,5 +56,3 @@ void CreateGraph(AdjGraph *G)
         G->vexlist[head].firstedge=p;
     }
 }
-=======
->>>>>>> 81f4516b5fe91cfeb897cc670072c3c49a66692c
