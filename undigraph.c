@@ -235,7 +235,7 @@ void DFS_matrix(MTGraph G_Matrix, int i)
 
 
 
-
+/*
 
 void BFSTraverse_link(AdjGraph G_link)
 {
@@ -257,12 +257,14 @@ void BFSTraverse_link(AdjGraph G_link)
     }
 }
 
-//void BFSTraverse_matrix(MTGraph G_matrix)
+void BFSTraverse_matrix(MTGraph G_matrix)
+{
+
+}
 
 
 
-
-
+*/
 
 
 void Showlink(AdjGraph G_link)
