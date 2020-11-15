@@ -168,7 +168,7 @@ int main()
             else
             {
                 DFSTraverse_link(G_link, DFS_link);
-                printf("\n\nThe Spanning forest:");
+                printf("\n\nThe Spanning forest");
                 Showlink(Adj_G);
                 system("pause");
             }
@@ -182,7 +182,7 @@ int main()
             else
             {
                 DFSTraverse_matrix(G_matrix, DFS_matrix);
-                printf("\n\nThe Spanning forest:");
+                printf("\n\nThe Spanning forest");
                 Showmatrix(MT_G);
                 system("pause");
             }
@@ -196,7 +196,7 @@ int main()
             else
             {
                 DFSTraverse_link(G_link, Non_DFS_link);
-                printf("\n\nThe Spanning forest:");
+                printf("\n\nThe Spanning forest");
                 Showlink(Adj_G);
                 system("pause");
             }
@@ -210,7 +210,7 @@ int main()
             else
             {
                 DFSTraverse_matrix(G_matrix, Non_DFS_matrix);
-                printf("\n\nThe Spanning forest:");
+                printf("\n\nThe Spanning forest");
                 Showmatrix(MT_G);
                 system("pause");
             }
@@ -224,7 +224,7 @@ int main()
             else
             {
                 BFSTraverse_link(G_link);
-                printf("\n\nThe Spanning forest:");
+                printf("\n\nThe Spanning forest");
                 Showlink(Adj_G);
                 system("pause");
             }
@@ -238,7 +238,7 @@ int main()
             else
             {
                 BFSTraverse_matrix(G_matrix);
-                printf("\n\nThe Spanning forest:");
+                printf("\n\nThe Spanning forest");
                 Showmatrix(MT_G);
                 system("pause");
             }
