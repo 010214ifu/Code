@@ -110,17 +110,18 @@ int main()
         {
         case 0://Quit
             printf("Quit successfully!\n");
-            system("pause");
             break;
         case 1://Create Adjacency List
             CreateGraph_link(&G_link);
             g_l = true;
+            printf("\nThe Created Graph:");
             Showlink(G_link);
             system("pause");
             break;
         case 2://Create Adjacency Matrix
             CreateGraph_matrix(&G_matrix);
             g_m = true;
+            printf("\nThe Created Graph:");
             Showmatrix(G_matrix);
             system("pause");
             break;
@@ -134,7 +135,9 @@ int main()
             {
                 Adj_to_MT(&G_link, &G_matrix);
                 g_m = true;
+                printf("\nThe Earlier Graph:");
                 Showlink(G_link);
+                printf("\n\nThe Created Graph:");
                 Showmatrix(G_matrix);
                 system("pause");
             }
@@ -149,7 +152,9 @@ int main()
             {
                 MT_to_Adj(&G_link, &G_matrix);
                 g_l = true;
+                printf("\nThe Earlier Graph:");
                 Showmatrix(G_matrix);
+                printf("\n\nThe Created Graph:");
                 Showlink(G_link);
                 system("pause");
             }
@@ -163,6 +168,7 @@ int main()
             else
             {
                 DFSTraverse_link(G_link, DFS_link);
+                printf("\n\nThe Spanning forest:");
                 Showlink(Adj_G);
                 system("pause");
             }
@@ -176,6 +182,7 @@ int main()
             else
             {
                 DFSTraverse_matrix(G_matrix, DFS_matrix);
+                printf("\n\nThe Spanning forest:");
                 Showmatrix(MT_G);
                 system("pause");
             }
@@ -189,6 +196,7 @@ int main()
             else
             {
                 DFSTraverse_link(G_link, Non_DFS_link);
+                printf("\n\nThe Spanning forest:");
                 Showlink(Adj_G);
                 system("pause");
             }
@@ -202,6 +210,7 @@ int main()
             else
             {
                 DFSTraverse_matrix(G_matrix, Non_DFS_matrix);
+                printf("\n\nThe Spanning forest:");
                 Showmatrix(MT_G);
                 system("pause");
             }
@@ -215,6 +224,7 @@ int main()
             else
             {
                 BFSTraverse_link(G_link);
+                printf("\n\nThe Spanning forest:");
                 Showlink(Adj_G);
                 system("pause");
             }
@@ -228,6 +238,7 @@ int main()
             else
             {
                 BFSTraverse_matrix(G_matrix);
+                printf("\n\nThe Spanning forest:");
                 Showmatrix(MT_G);
                 system("pause");
             }
@@ -297,10 +308,7 @@ void POP(STACK S)
         S->next = stk->next;
         k = stk->vertex;
         free(stk);
-        return k;
     }
-    else
-        exit(0);
 }
 int TOP(STACK S)
 {
@@ -312,10 +320,10 @@ int TOP(STACK S)
 
 void CreateGraph_link(AdjGraph *G_link)
 {
+    freopen("input.txt", "r", stdin);
     int head, tail, weight;
     EdgeNode *p;
-    printf("How many vertices and edges?");
-    scanf("%d %d", &G_link->n, &G_link->e);
+    scanf("%d%d", &G_link->n, &G_link->e);
     for(int i=0; i<G_link->n; i++)
     {
         scanf("%d", &G_link->vexlist[i].vertex);
@@ -323,7 +331,7 @@ void CreateGraph_link(AdjGraph *G_link)
     }
     for (int i = 0; i < G_link->e; i++)
     {
-        scanf("%d %d %d", &head, &tail, &weight);
+        scanf("%d%d%d", &head, &tail, &weight);
         p = (EdgeNode *)malloc(sizeof(EdgeNode));
         p->cost=weight; p->adjvex=tail;
         p->next=G_link->vexlist[head].firstedge;
@@ -333,12 +341,14 @@ void CreateGraph_link(AdjGraph *G_link)
         p->next=G_link->vexlist[tail].firstedge;
         G_link->vexlist[tail].firstedge=p;
     }
+    freopen("CON", "r", stdin);
 }
 void CreateGraph_matrix(MTGraph *G_Matrix)
 {
+    freopen("input.txt", "r", stdin);
     int head, tail, weight;
     int i, j;
-    printf("How many vertices and edges?");
+    //printf("How many vertices and edges?");
     scanf("%d %d", &G_Matrix->n, &G_Matrix->e);
     for(i=0; i<G_Matrix->n; i++)
     {
@@ -352,6 +362,7 @@ void CreateGraph_matrix(MTGraph *G_Matrix)
         G_Matrix->edge[head][tail]=weight;
         G_Matrix->edge[tail][head]=weight;
     }
+    freopen("CON", "r", stdin);
 }
 
 void Adj_to_MT(AdjGraph *G_link, MTGraph *G_Matrix)
@@ -485,8 +496,10 @@ void DFS_matrix(MTGraph G_Matrix, int i)
 void Non_DFS_link(AdjGraph G_link, int i)
 {
     EdgeNode *p, *q;
+    int t;
     STACK s = MAKENULL_STACK();
     PUSH(s, i);
+    t = i;
     printf("%d ", i);
     visited[i] = true;
     dfn[i] = count++;
@@ -502,23 +515,26 @@ void Non_DFS_link(AdjGraph G_link, int i)
             q = (EdgeNode *)malloc(sizeof(EdgeNode));
             q->cost = p->cost;
             q->adjvex = p->adjvex;
-            q->next = Adj_G.vexlist[i].firstedge;
-            Adj_G.vexlist[i].firstedge = q;
+            q->next = Adj_G.vexlist[t].firstedge;
+            Adj_G.vexlist[t].firstedge = q;
             q = (EdgeNode *)malloc(sizeof(EdgeNode));
             q->cost = p->cost;
-            q->adjvex = i;
+            q->adjvex = t;
             q->next = Adj_G.vexlist[p->adjvex].firstedge;
             Adj_G.vexlist[p->adjvex].firstedge = q;
+            t = p->adjvex;
             p = G_link.vexlist[p->adjvex].firstedge;
         }
+        else
+            p = p->next;
         if (p == NULL)
         {
             if (TOP(s) == i)
                 break;
             POP(s);
+            t = TOP(s);
             p = G_link.vexlist[TOP(s)].firstedge;
         }
-        p = p->next;
     }
 }
 void Non_DFS_matrix(MTGraph G_matrix, int i)
@@ -580,7 +596,7 @@ void BFS_link(AdjGraph G_link, int k)
     EdgeNode *p, *q;
     QUEUE Q;
     MAKENULL_QUEUE(&Q);
-    printf("%d", k);
+    printf("%d ", k);
     visited[k] = true;
     dfn[k] = count++;
     ENQUEUE(&Q, k);
@@ -592,7 +608,7 @@ void BFS_link(AdjGraph G_link, int k)
         {
             if (!visited[p->adjvex])
             {
-                printf("%d", p->adjvex);
+                printf("%d ", p->adjvex);
                 visited[p->adjvex] = true;
                 dfn[p->adjvex] = count++;
                 ENQUEUE(&Q, p->adjvex);
@@ -640,7 +656,7 @@ void BFS_matrix(MTGraph G_matrix, int k)
     EdgeNode *p;
     QUEUE Q;
     MAKENULL_QUEUE(&Q);
-    printf("%d", k);
+    printf("%d ", k);
     visited[k] = true;
     dfn[k] = count++;
     ENQUEUE(&Q, k);
@@ -651,7 +667,7 @@ void BFS_matrix(MTGraph G_matrix, int k)
         {
             if (G_matrix.edge[i][j] > 0 && !visited[j])
             {
-                printf("%d", j);
+                printf("%d ", j);
                 visited[j] = true;
                 dfn[j] = count++;
                 ENQUEUE(&Q, j);
