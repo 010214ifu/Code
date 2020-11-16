@@ -6,8 +6,17 @@
 #define MAX_VERTEX 100
 
 
+typedef struct
+{
+    int sub;
+    int path_length;
+}HeapNode;
 
-
+typedef struct
+{
+    HeapNode data[MAX_VERTEX+1];
+    int n;
+}HEAP;
 
 typedef struct
 {
@@ -17,18 +26,40 @@ typedef struct
 }MTGraph;
 
 MTGraph G;
-int D[MAX_VERTEX + 1];
-int P[MAX_VERTEX + 1];
-bool S[MAX_VERTEX + 1];
+HEAP Min_Heap;
+
+
+int D_SPF[MAX_VERTEX + 1];
+int P_SPF[MAX_VERTEX + 1];
+bool S_SPF[MAX_VERTEX + 1];
+
+int D_Floyd[MAX_VERTEX+1][MAX_VERTEX+1];
+int P_Floyd[MAX_VERTEX+1][MAX_VERTEX+1];
+int path_Floyd[MAX_VERTEX+1][MAX_VERTEX+1];
+
+//创建空堆
+void MakeNullHeap();
+//判断空堆
+bool HeapEmpty();
+//判断满堆
+bool HeapFull();
+//初始化堆
+void HeapInit();
+//堆插入
+void Insert(int sub, int path_length);
+//堆删除任意位置元素，返回角标
+int DeleteData(int k);
 
 //邻接矩阵存储结构有向图建立
 void CreateGraph_matrix();
 //最小值
 int MinCost();
 //Dijkstra算法
-void Dijkstra();
+void Dijkstra(int source);
+void Dijkstra_path(int source, int target);
 //Floyd算法
 void Floyd();
+void Floyd_path(int source, int target);
 //展示图
 void Showmatrix(MTGraph G);
 
@@ -36,6 +67,64 @@ int main()
 {
     
     return 0;
+}
+
+void MakeNullHeap()
+{
+    Min_Heap.n=0;
+}
+bool HeapEmpty()
+{
+    return (!Min_Heap.n);
+}
+bool HeapFull()
+{
+    return (Min_Heap.n==MAX_VERTEX);
+}
+void HeapInit()
+{
+    for(int i=1;i<=G.n;i++)
+    Insert(i,D_SPF[i]);
+}
+
+void Insert(int sub, int path_length)
+{
+    int i=1;
+    if(!HeapFull())
+    {
+        i=Min_Heap.n+1;
+        while ((i!=1)&&(path_length<Min_Heap.data[i/2].path_length))
+        {
+            Min_Heap.data[i]=Min_Heap.data[i/2];
+            i/=2;
+        }
+        
+    }
+    Min_Heap.data[i].sub=sub;
+    Min_Heap.data[i].path_length=path_length;
+    Min_Heap.n++;
+}
+int DeleteData(int k)
+{
+    int parent=k,child=2*k;
+    HeapNode elem,tmp;
+    if(!HeapEmpty())
+    {
+        elem=Min_Heap.data[parent];
+        tmp=Min_Heap.data[Min_Heap.n--];
+        while (child<=Min_Heap.n)
+        {
+            if((child<Min_Heap.n)&&(Min_Heap.data[child].path_length
+            >Min_Heap.data[child+1].path_length))
+            child++;
+            if(tmp.path_length<=Min_Heap.data[child].path_length) break;
+            Min_Heap.data[parent]=Min_Heap.data[child];
+            parent=child;
+            child*=2;
+        }
+        Min_Heap.data[parent]=tmp;
+        return elem.sub;
+    }
 }
 
 
@@ -61,24 +150,39 @@ void CreateGraph_matrix( )
     freopen("CON", "r", stdin);
 }
 
-int MinCost()
-{
-    return;
-}
-
 void Dijkstra(int source)
 {
     int i, v, w, sum;
+    int t;
+    int temp = G.n-1;
     for (i = 1; i <= G.n; i++)
     {
-        D[i] = G.edge[source][i];
-        S[i] = false;
+        D_SPF[i] = G.edge[source][i];
+        S_SPF[i] = false;
     }
-    S[source] = true;
+    S_SPF[source] = true;
+    MakeNullHeap();
+    HeapInit();
     for (i = 1; i < G.n; i++)
     {
-        w = MinCost();
-        S[w] = true;
+        //w = MinCost();//求最小值的同时删除，后面补位
+        w=DeleteData(1);
+        S_SPF[w] = true;
+        //temp--;
+        for ( v = 0; v < Min_Heap.n; v++)
+        {
+            sum = D_SPF[w] + G.edge[w][Min_Heap.data[v].sub];
+            if (sum < D_SPF[v])
+            {
+                D_SPF[Min_Heap.data[v].sub]=sum;
+                t=DeleteData(v);
+                Insert(t,sum);
+                //D[v] = sum;
+                //delete,,,insert
+                P_SPF[v] = w;
+            }
+        }
+        /*
         for ( v = 0; v <= G.n; v++)
         {
             if (S[v] != true)
@@ -91,11 +195,45 @@ void Dijkstra(int source)
                 }
             }
         }
-        
+        */
     }
 }
 
+void Dijkstra_path(int source, int target)
+{
+    target入栈
+    int pre=P_SPF[target];
+    while (pre!=source)
+    {
+        pre入栈
+        pre=P_SPF[pre];
+    }
+    printf("Path: %c",G.vertex[pre]);
+    while (栈不空)
+    {
+        printf("-->%c",出栈);
+    }
+    
+}
 
+void Floyd()
+{
+    int i, j, k;
+    for ( i = 1; i <= G.n; i++)
+    for (j=1 ;j<=G.n;j++)
+    {
+        D_Floyd[i][j]=G.edge[i][j];
+        P_Floyd[i][j]=-1;
+    }
+    for(k=1;k<=G.n;k++)
+    for(i=1;i<=G.n;i++)
+    for(j=1;j<=G.n;j++)
+    if(D_Floyd[i][k]+D_Floyd[k][j]<D_Floyd[i][j])
+    {
+        D_Floyd[i][j]=D_Floyd[i][k]+D_Floyd[k][j];
+        P_Floyd[i][j]=k;
+    }
+}
 
 void Showmatrix(MTGraph G)
 {
