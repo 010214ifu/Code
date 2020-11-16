@@ -493,87 +493,7 @@ void DFS_matrix(MTGraph G_Matrix, int i)
         }
 }
 
-<<<<<<< HEAD
 
-
-/*
-=======
-void Non_DFS_link(AdjGraph G_link, int i)
-{
-    EdgeNode *p, *q;
-    int t;
-    STACK s = MAKENULL_STACK();
-    PUSH(s, i);
-    t = i;
-    printf("%d ", i);
-    visited[i] = true;
-    dfn[i] = count++;
-    p = G_link.vexlist[i].firstedge;
-    while(p)
-    {
-        if(!visited[p->adjvex])
-        {
-            PUSH(s, p->adjvex);
-            printf("%d ", p->adjvex);
-            visited[p->adjvex] = true;
-            dfn[p->adjvex] = count++;
-            q = (EdgeNode *)malloc(sizeof(EdgeNode));
-            q->cost = p->cost;
-            q->adjvex = p->adjvex;
-            q->next = Adj_G.vexlist[t].firstedge;
-            Adj_G.vexlist[t].firstedge = q;
-            q = (EdgeNode *)malloc(sizeof(EdgeNode));
-            q->cost = p->cost;
-            q->adjvex = t;
-            q->next = Adj_G.vexlist[p->adjvex].firstedge;
-            Adj_G.vexlist[p->adjvex].firstedge = q;
-            t = p->adjvex;
-            p = G_link.vexlist[p->adjvex].firstedge;
-        }
-        else
-            p = p->next;
-        if (p == NULL)
-        {
-            if (TOP(s) == i)
-                break;
-            POP(s);
-            t = TOP(s);
-            p = G_link.vexlist[TOP(s)].firstedge;
-        }
-    }
-}
-void Non_DFS_matrix(MTGraph G_matrix, int i)
-{
-    int t = i;
-    STACK s = MAKENULL_STACK();
-    PUSH(s, t);
-    printf("%d ", t);
-    visited[t] = true;
-    dfn[t] = count++;
-    for (int j = t;; j++)
-    {
-        if (G_matrix.edge[t][j] >= 1 && !visited[j])
-        {
-            MT_G.edge[t][j] = G_matrix.edge[t][j];
-            MT_G.edge[j][t] = G_matrix.edge[t][j];
-            PUSH(s, j);
-            printf("%d ", j);
-            visited[j] = true;
-            dfn[j] = count++;
-            t = j;
-            j = 0;
-        }
-        if(j==G_matrix.n)
-        {
-            if (i == TOP(s))
-                break;
-            POP(s);
-            t = TOP(s);
-            j = 0;
-        }
-    }
-}
->>>>>>> 120328e93b78b975dcaa0d9e6cbddd99bfb41352
 
 void BFSTraverse_link(AdjGraph G_link)
 {
@@ -683,19 +603,7 @@ void BFS_matrix(MTGraph G_matrix, int k)
         }
     }
 }
-<<<<<<< HEAD
 
-void BFSTraverse_matrix(MTGraph G_matrix)
-{
-
-}
-
-
-
-*/
-
-=======
->>>>>>> 120328e93b78b975dcaa0d9e6cbddd99bfb41352
 
 void Showlink(AdjGraph G_link)
 {

@@ -25,6 +25,13 @@ typedef struct
     int n,e;
 }MTGraph;
 
+typedef struct stack
+{
+    int vertex;
+    struct stack *next;
+}*STACK;
+
+
 MTGraph G;
 HEAP Min_Heap;
 
@@ -51,14 +58,16 @@ void Insert(int sub, int path_length);
 //堆删除任意位置元素，返回角标
 int DeleteData(int k);
 
-//
+//栈
+STACK MAKENULL_STACK( );
+void PUSH(STACK S, int k);
+int POP(STACK S);
+//int TOP(STACK S);
 
 
 
 //邻接矩阵存储结构有向图建立
 void CreateGraph_matrix();
-//最小值
-int MinCost();
 //Dijkstra算法
 void Dijkstra(int source);
 void Dijkstra_path(int source, int target);
@@ -70,15 +79,53 @@ void Floyd_reachable_matrix();
 //展示图
 void Showmatrix(MTGraph G);
 
+
+
 int main()
 {
-    
+    CreateGraph_matrix();
+    printf("BGIU");
+    Dijkstra(2);
+    printf("GUIGB");
+    Dijkstra_path(2, 4);
     return 0;
+}
+
+
+
+STACK MAKENULL_STACK( )
+{
+    STACK s;
+    s = (struct stack *)malloc(sizeof(struct stack));
+    s->next = NULL;
+    return s;
+}
+void PUSH(STACK S, int k)
+{
+    STACK stk = (struct stack *)malloc(sizeof(struct stack));
+    stk->vertex = k;
+    stk->next = S->next;
+    S->next = stk;
+}
+int POP(STACK S)
+{
+    int k;
+    STACK stk;
+    if (S->next)
+    {
+        stk = S->next;
+        S->next = stk->next;
+        k = stk->vertex;
+        free(stk);
+        return k;
+    }
+    else
+        return -1;
 }
 
 void MakeNullHeap()
 {
-    Min_Heap.n=0;
+    Min_Heap.n = 0;
 }
 bool HeapEmpty()
 {
@@ -90,46 +137,46 @@ bool HeapFull()
 }
 void HeapInit()
 {
-    for(int i=1;i<=G.n;i++)
-    Insert(i,D_SPF[i]);
+    for (int i = 1; i <= G.n; i++)
+        Insert(i, D_SPF[i]);
 }
 
 void Insert(int sub, int path_length)
 {
-    int i=1;
+    int i = 1;
     if(!HeapFull())
     {
-        i=Min_Heap.n+1;
-        while ((i!=1)&&(path_length<Min_Heap.data[i/2].path_length))
+        i = Min_Heap.n + 1;
+        while ((i != 1) && (path_length < Min_Heap.data[i / 2].path_length))
         {
-            Min_Heap.data[i]=Min_Heap.data[i/2];
-            i/=2;
+            Min_Heap.data[i] = Min_Heap.data[i / 2];
+            i /= 2;
         }
         
     }
-    Min_Heap.data[i].sub=sub;
-    Min_Heap.data[i].path_length=path_length;
+    Min_Heap.data[i].sub = sub;
+    Min_Heap.data[i].path_length = path_length;
     Min_Heap.n++;
 }
 int DeleteData(int k)
 {
-    int parent=k,child=2*k;
-    HeapNode elem,tmp;
-    if(!HeapEmpty())
+    int parent = k, child = 2 * k;
+    HeapNode elem, tmp;
+    if (!HeapEmpty())
     {
-        elem=Min_Heap.data[parent];
-        tmp=Min_Heap.data[Min_Heap.n--];
-        while (child<=Min_Heap.n)
+        elem = Min_Heap.data[parent];
+        tmp = Min_Heap.data[Min_Heap.n--];
+        while (child <= Min_Heap.n)
         {
-            if((child<Min_Heap.n)&&(Min_Heap.data[child].path_length
-            >Min_Heap.data[child+1].path_length))
-            child++;
-            if(tmp.path_length<=Min_Heap.data[child].path_length) break;
-            Min_Heap.data[parent]=Min_Heap.data[child];
-            parent=child;
-            child*=2;
+            if ((child < Min_Heap.n) && (Min_Heap.data[child].path_length > Min_Heap.data[child + 1].path_length))
+                child++;
+            if (tmp.path_length <= Min_Heap.data[child].path_length)
+                break;
+            Min_Heap.data[parent] = Min_Heap.data[child];
+            parent = child;
+            child *= 2;
         }
-        Min_Heap.data[parent]=tmp;
+        Min_Heap.data[parent] = tmp;
         return elem.sub;
     }
 }
@@ -159,9 +206,7 @@ void CreateGraph_matrix( )
 
 void Dijkstra(int source)
 {
-    int i, v, w, sum;
-    int t;
-    int temp = G.n-1;
+    int i, v, w, sum, t;
     for (i = 1; i <= G.n; i++)
     {
         D_SPF[i] = G.edge[source][i];
@@ -173,17 +218,17 @@ void Dijkstra(int source)
     for (i = 1; i < G.n; i++)
     {
         //w = MinCost();//求最小值的同时删除，后面补位
-        w=DeleteData(1);
+        w = DeleteData(1);
         S_SPF[w] = true;
-        //temp--;
+        ;
         for ( v = 0; v < Min_Heap.n; v++)
         {
             sum = D_SPF[w] + G.edge[w][Min_Heap.data[v].sub];
             if (sum < D_SPF[v])
             {
-                D_SPF[Min_Heap.data[v].sub]=sum;
-                t=DeleteData(v);
-                Insert(t,sum);
+                D_SPF[Min_Heap.data[v].sub] = sum;
+                t = DeleteData(v);
+                Insert(t, sum);
                 //D[v] = sum;
                 //delete,,,insert
                 P_SPF[v] = w;
@@ -208,17 +253,20 @@ void Dijkstra(int source)
 
 void Dijkstra_path(int source, int target)
 {
-    target入栈
-    int pre=P_SPF[target];
-    while (pre!=source)
+    STACK s = MAKENULL_STACK();
+    PUSH(s, target);
+    //target入栈
+    int pre = P_SPF[target];
+    while (pre != source)
     {
-        pre入栈
-        pre=P_SPF[pre];
+        //pre入栈
+        PUSH(s, pre);
+        pre = P_SPF[pre];
     }
-    printf("Path: %c",G.vertex[pre]);
-    while (栈不空)
+    printf("Path: %c", G.vertex[pre]);
+    while (s->next != NULL)
     {
-        printf("-->%c",出栈);
+        printf("-->%c", G.vertex[POP(s)]);
     }
     
 }
@@ -227,39 +275,41 @@ void Floyd()
 {
     int i, j, k;
     for ( i = 1; i <= G.n; i++)
-    for (j=1 ;j<=G.n;j++)
-    {
-        D_Floyd[i][j]=G.edge[i][j];
-        P_Floyd[i][j]=-1;
+        for (j = 1; j <= G.n; j++)
+        {
+            D_Floyd[i][j] = G.edge[i][j];
+            P_Floyd[i][j] = -1;
     }
-    for(k=1;k<=G.n;k++)
-    for(i=1;i<=G.n;i++)
-    for(j=1;j<=G.n;j++)
-    if(D_Floyd[i][k]+D_Floyd[k][j]<D_Floyd[i][j])
-    {
-        D_Floyd[i][j]=D_Floyd[i][k]+D_Floyd[k][j];
-        P_Floyd[i][j]=k;
-    }
+    for (k = 1; k <= G.n; k++)
+        for (i = 1; i <= G.n; i++)
+            for (j = 1; j <= G.n; j++)
+                if (D_Floyd[i][k] + D_Floyd[k][j] < D_Floyd[i][j])
+                {
+                    D_Floyd[i][j] = D_Floyd[i][k] + D_Floyd[k][j];
+                    P_Floyd[i][j] = k;
+                }
 }
 
+/*
 void Floyd_path(int source, int target)
 {
-    if(source>G.n||target>G.n);
-    //错误，退出
-    //初始化path数组
-    for(int i=1;i<=G.n;i++)
-    for(int j=1;j<=G.n;j++)
-    path_Floyd[i][j]=0;
-    
-    int pre=P_Floyd[source][target];
+    if(source>G.n||target>G.n)
+        ;
+    错误，退出
+    初始化path数组;
+    for (int i = 1; i <= G.n; i++)
+        for (int j = 1; j <= G.n; j++)
+            path_Floyd[i][j] = 0;
+
+    int pre = P_Floyd[source][target];
     int tmp_target;
-    while (pre!=-1)
+    while (pre != -1)
     {
-        path_Floyd[pre][target]=1;
-        tmp_target=pre;
-        pre=P_Floyd[source][tmp_target];
+        path_Floyd[pre][target] = 1;
+        tmp_target = pre;
+        pre = P_Floyd[source][tmp_target];
     }
-    path_Floyd[source][tmp_target]=1;
+    path_Floyd[source][tmp_target] = 1;
     //output
     printf("The matrix of the minimal path:\n");
     for (int i = 1; i <= G.n; i++)
@@ -272,20 +322,21 @@ void Floyd_path(int source, int target)
     }
     
 }
+*/
 
 void Floyd_reachable_matrix()
 {
-    for(int i=1;i<=G.n;i++)
-    for(int j=1;j<=G.n;j++)
-    {
-        if(P_Floyd[i][j]=INT_MAX)
-        reachable_matrix[i][j]=1;
-    }
-    for(int i=1;i<=G.n;i++)
-    {
-        for(int j=1;j<=G.n;j++)
+    for (int i = 1; i <= G.n; i++)
+        for (int j = 1; j <= G.n; j++)
         {
-            printf("%d ",reachable_matrix[i][j]);
+            if (P_Floyd[i][j] = INT_MAX)
+                reachable_matrix[i][j] = 1;
+        }
+    for (int i = 1; i <= G.n; i++)
+    {
+        for (int j = 1; j <= G.n; j++)
+        {
+            printf("%d ", reachable_matrix[i][j]);
         }
         printf("\n");
     }
