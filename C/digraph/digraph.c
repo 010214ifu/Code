@@ -5,7 +5,6 @@
 #include<stdbool.h>
 #define MAX_VERTEX 100
 
-
 typedef struct
 {
     int sub;
@@ -31,7 +30,6 @@ typedef struct stack
     struct stack *next;
 }*STACK;
 
-
 MTGraph G;
 HEAP Min_Heap;
 
@@ -42,7 +40,7 @@ bool S_SPF[MAX_VERTEX + 1];
 
 int D_Floyd[MAX_VERTEX+1][MAX_VERTEX+1];
 int P_Floyd[MAX_VERTEX+1][MAX_VERTEX+1];
-bool reachable_matrix[MAX_VERTEX+1][MAX_VERTEX+1];
+int reachable_matrix[MAX_VERTEX+1][MAX_VERTEX+1];
 int path_Floyd[MAX_VERTEX+1][MAX_VERTEX+1];
 
 //创建空堆
@@ -52,7 +50,7 @@ bool HeapEmpty();
 //判断满堆
 bool HeapFull();
 //初始化堆
-void HeapInit();
+void HeapInit(int source);
 //堆插入
 void Insert(int sub, int path_length);
 //堆删除任意位置元素，返回角标
@@ -62,9 +60,6 @@ int DeleteData(int k);
 STACK MAKENULL_STACK( );
 void PUSH(STACK S, int k);
 int POP(STACK S);
-//int TOP(STACK S);
-
-
 
 //邻接矩阵存储结构有向图建立
 void CreateGraph_matrix();
@@ -79,18 +74,40 @@ void Floyd_reachable_matrix();
 //展示图
 void Showmatrix(MTGraph G);
 
-
-
 int main()
 {
     CreateGraph_matrix();
-    printf("BGIU");
-    Dijkstra(2);
-    printf("GUIGB");
-    Dijkstra_path(2, 4);
+    for (int i = 1; i <= G.n; i++)
+    {
+        Dijkstra(i);
+        for (int j = 1; j <= G.n; j++)
+            Dijkstra_path(i, j);
+        printf("\n");
+    }
+    Floyd();
+    for (int i = 1; i <= G.n; i++)
+    {
+        for (int j = 1; j <= G.n; j++)
+        {
+            if (D_Floyd[i][j] != INT_MAX)
+                printf("%d ", D_Floyd[i][j]);
+            else
+                printf("s ");
+        }
+        printf("\n");
+    }
+    Floyd_reachable_matrix();
+    for (int i = 1; i <= G.n; i++)
+    {
+        for (int j = 1; j <= G.n; j++)
+        {
+            printf("%c", G.vertex[i]);
+            Floyd_path(i, j);
+            printf("\n");
+        }
+    }
     return 0;
 }
-
 
 
 STACK MAKENULL_STACK( )
@@ -135,39 +152,40 @@ bool HeapFull()
 {
     return (Min_Heap.n==MAX_VERTEX);
 }
-void HeapInit()
+void HeapInit(int source)
 {
     for (int i = 1; i <= G.n; i++)
-        Insert(i, D_SPF[i]);
+        if (i != source)
+            Insert(i, D_SPF[i]);
 }
 
 void Insert(int sub, int path_length)
 {
-    int i = 1;
+    int i;
     if(!HeapFull())
     {
         i = Min_Heap.n + 1;
-        while ((i != 1) && (path_length < Min_Heap.data[i / 2].path_length))
+        while (i != 1 && path_length < Min_Heap.data[i / 2].path_length)
         {
             Min_Heap.data[i] = Min_Heap.data[i / 2];
             i /= 2;
         }
-        
     }
     Min_Heap.data[i].sub = sub;
     Min_Heap.data[i].path_length = path_length;
     Min_Heap.n++;
 }
+
 int DeleteData(int k)
 {
-    int parent = k, child = 2 * k;
+    int parent = k, child = 2 * k, min;
     HeapNode elem, tmp;
     if (!HeapEmpty())
     {
         elem = Min_Heap.data[parent];
         tmp = Min_Heap.data[Min_Heap.n--];
         while (child <= Min_Heap.n)
-        {
+        {   
             if ((child < Min_Heap.n) && (Min_Heap.data[child].path_length > Min_Heap.data[child + 1].path_length))
                 child++;
             if (tmp.path_length <= Min_Heap.data[child].path_length)
@@ -188,9 +206,11 @@ void CreateGraph_matrix( )
     int head, tail, weight;
     int i, j;
     scanf("%d %d", &G.n, &G.e);
+    getchar();
     for (i = 1; i <= G.n; i++)
     {
         scanf("%c", &G.vertex[i]);
+        getchar();
         for (j = 1; j <= G.n; j++) //初始化边表
         {
             G.edge[i][j] = INT_MAX;
@@ -199,7 +219,7 @@ void CreateGraph_matrix( )
     for (i = 1; i <= G.e; i++)
     {
         scanf("%d %d %d", &head, &tail, &weight);
-        G.edge[head][tail]=weight;
+        G.edge[head][tail] = weight;
     }
     freopen("CON", "r", stdin);
 }
@@ -211,48 +231,39 @@ void Dijkstra(int source)
     {
         D_SPF[i] = G.edge[source][i];
         S_SPF[i] = false;
+        P_SPF[i] = source;
     }
     S_SPF[source] = true;
     MakeNullHeap();
-    HeapInit();
+    HeapInit(source);
     for (i = 1; i < G.n; i++)
     {
-        //w = MinCost();//求最小值的同时删除，后面补位
         w = DeleteData(1);
         S_SPF[w] = true;
-        ;
-        for ( v = 0; v < Min_Heap.n; v++)
+        for ( v = 1; v <= Min_Heap.n; v++)
         {
-            sum = D_SPF[w] + G.edge[w][Min_Heap.data[v].sub];
-            if (sum < D_SPF[v])
+            if (G.edge[w][Min_Heap.data[v].sub] == INT_MAX || D_SPF[w] == INT_MAX)
+                sum = INT_MAX;
+            else
+                sum = G.edge[w][Min_Heap.data[v].sub] + D_SPF[w];
+            if (sum < D_SPF[Min_Heap.data[v].sub])
             {
                 D_SPF[Min_Heap.data[v].sub] = sum;
                 t = DeleteData(v);
                 Insert(t, sum);
-                //D[v] = sum;
-                //delete,,,insert
-                P_SPF[v] = w;
+                P_SPF[t] = w;
             }
         }
-        /*
-        for ( v = 0; v <= G.n; v++)
-        {
-            if (S[v] != true)
-            {
-                sum = D[w] + G.edge[w][v];
-                if (sum < D[v])
-                {
-                    D[v] = sum;
-                    P[v] = w;
-                }
-            }
-        }
-        */
     }
 }
 
 void Dijkstra_path(int source, int target)
 {
+    if (D_SPF[target] == INT_MAX || source == target)
+    {
+        printf("\nNO path.");
+        return;
+    }
     STACK s = MAKENULL_STACK();
     PUSH(s, target);
     //target入栈
@@ -263,101 +274,80 @@ void Dijkstra_path(int source, int target)
         PUSH(s, pre);
         pre = P_SPF[pre];
     }
-    printf("Path: %c", G.vertex[pre]);
+    printf("\nPath: %c", G.vertex[pre]);
     while (s->next != NULL)
     {
         printf("-->%c", G.vertex[POP(s)]);
     }
-    
+
 }
 
 void Floyd()
 {
-    int i, j, k;
+    int i, j, k, sum;
     for ( i = 1; i <= G.n; i++)
         for (j = 1; j <= G.n; j++)
         {
             D_Floyd[i][j] = G.edge[i][j];
             P_Floyd[i][j] = -1;
-    }
+        }
     for (k = 1; k <= G.n; k++)
         for (i = 1; i <= G.n; i++)
             for (j = 1; j <= G.n; j++)
-                if (D_Floyd[i][k] + D_Floyd[k][j] < D_Floyd[i][j])
+            {
+                if (i != j)
                 {
-                    D_Floyd[i][j] = D_Floyd[i][k] + D_Floyd[k][j];
-                    P_Floyd[i][j] = k;
-                }
+                    if (D_Floyd[i][k] == INT_MAX || D_Floyd[k][j] == INT_MAX)
+                        sum = INT_MAX;
+                    else
+                        sum = D_Floyd[i][k] + D_Floyd[k][j];
+                    if (sum < D_Floyd[i][j])
+                    {
+                        D_Floyd[i][j] = sum;
+                        P_Floyd[i][j] = k;
+                    }
+                } 
+            }
 }
 
-/*
+//source没输出
 void Floyd_path(int source, int target)
 {
-    if(source>G.n||target>G.n)
-        ;
-    错误，退出
-    初始化path数组;
-    for (int i = 1; i <= G.n; i++)
-        for (int j = 1; j <= G.n; j++)
-            path_Floyd[i][j] = 0;
-
-    int pre = P_Floyd[source][target];
-    int tmp_target;
-    while (pre != -1)
+    if (D_Floyd[source][target] == INT_MAX)
     {
-        path_Floyd[pre][target] = 1;
-        tmp_target = pre;
-        pre = P_Floyd[source][tmp_target];
+        printf(" cannot reach %c.", G.vertex[target]);
+        return;
     }
-    path_Floyd[source][tmp_target] = 1;
-    //output
-    printf("The matrix of the minimal path:\n");
-    for (int i = 1; i <= G.n; i++)
+    if (source > G.n || target > G.n)
     {
-        for (int j = i; j <= G.n; j++)
-        {
-            printf("%d ",path_Floyd[i][j]);
-        }
-        printf("\n");
+        printf("Wrong.\n");
+        return;
     }
-    
+    int k = P_Floyd[source][target];
+    if (k != -1)
+    {
+        Floyd_path(source, k);
+        Floyd_path(k, target);
+    }
+    else
+        printf("-->%c", G.vertex[target]);
 }
-*/
 
 void Floyd_reachable_matrix()
 {
     for (int i = 1; i <= G.n; i++)
         for (int j = 1; j <= G.n; j++)
         {
-            if (P_Floyd[i][j] = INT_MAX)
+            if (D_Floyd[i][j] != INT_MAX || i == j)
                 reachable_matrix[i][j] = 1;
+            else if (D_Floyd[i][j] == INT_MAX)
+                reachable_matrix[i][j] = 0;
         }
     for (int i = 1; i <= G.n; i++)
     {
         for (int j = 1; j <= G.n; j++)
         {
             printf("%d ", reachable_matrix[i][j]);
-        }
-        printf("\n");
-    }
-}
-
-void Showmatrix(MTGraph G)
-{
-    printf("\nVertices:");
-    for (int j = 1; j <= G.n; j++)
-    {
-        printf("%c ", G.vertex[j]);
-    }
-    printf("\nAdjacency matrix:\n");
-    for (int i = 1; i <= G.n; i++)
-    {
-        for (int j = 1; j <= G.n; j++)
-        {
-            if (G.edge[i][j] == INT_MAX)
-                printf("n ");
-            else
-                printf("%d ", G.edge[i][j]);
         }
         printf("\n");
     }
