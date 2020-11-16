@@ -35,6 +35,7 @@ bool S_SPF[MAX_VERTEX + 1];
 
 int D_Floyd[MAX_VERTEX+1][MAX_VERTEX+1];
 int P_Floyd[MAX_VERTEX+1][MAX_VERTEX+1];
+bool reachable_matrix[MAX_VERTEX+1][MAX_VERTEX+1];
 int path_Floyd[MAX_VERTEX+1][MAX_VERTEX+1];
 
 //创建空堆
@@ -50,6 +51,10 @@ void Insert(int sub, int path_length);
 //堆删除任意位置元素，返回角标
 int DeleteData(int k);
 
+//
+
+
+
 //邻接矩阵存储结构有向图建立
 void CreateGraph_matrix();
 //最小值
@@ -60,6 +65,8 @@ void Dijkstra_path(int source, int target);
 //Floyd算法
 void Floyd();
 void Floyd_path(int source, int target);
+//有向图可达矩阵
+void Floyd_reachable_matrix();
 //展示图
 void Showmatrix(MTGraph G);
 
@@ -232,6 +239,55 @@ void Floyd()
     {
         D_Floyd[i][j]=D_Floyd[i][k]+D_Floyd[k][j];
         P_Floyd[i][j]=k;
+    }
+}
+
+void Floyd_path(int source, int target)
+{
+    if(source>G.n||target>G.n);
+    //错误，退出
+    //初始化path数组
+    for(int i=1;i<=G.n;i++)
+    for(int j=1;j<=G.n;j++)
+    path_Floyd[i][j]=0;
+    
+    int pre=P_Floyd[source][target];
+    int tmp_target;
+    while (pre!=-1)
+    {
+        path_Floyd[pre][target]=1;
+        tmp_target=pre;
+        pre=P_Floyd[source][tmp_target];
+    }
+    path_Floyd[source][tmp_target]=1;
+    //output
+    printf("The matrix of the minimal path:\n");
+    for (int i = 1; i <= G.n; i++)
+    {
+        for (int j = i; j <= G.n; j++)
+        {
+            printf("%d ",path_Floyd[i][j]);
+        }
+        printf("\n");
+    }
+    
+}
+
+void Floyd_reachable_matrix()
+{
+    for(int i=1;i<=G.n;i++)
+    for(int j=1;j<=G.n;j++)
+    {
+        if(P_Floyd[i][j]=INT_MAX)
+        reachable_matrix[i][j]=1;
+    }
+    for(int i=1;i<=G.n;i++)
+    {
+        for(int j=1;j<=G.n;j++)
+        {
+            printf("%d ",reachable_matrix[i][j]);
+        }
+        printf("\n");
     }
 }
 
