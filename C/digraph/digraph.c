@@ -71,8 +71,13 @@ void Floyd();
 void Floyd_path(int source, int target);
 //有向图可达矩阵
 void Floyd_reachable_matrix();
-//展示图
-void Showmatrix(MTGraph G);
+/*
+Dijkstra最短路径长度和最短路径
+Floyd最短距离矩阵和最短路径矩阵，任意两个顶点最短路径长度和最短路径
+每个顶点到指定顶点c最短路径
+u到v和v到u最短路径
+Floyd可达矩阵
+*/
 
 int main()
 {
@@ -101,9 +106,12 @@ int main()
     {
         for (int j = 1; j <= G.n; j++)
         {
-            printf("%c", G.vertex[i]);
-            Floyd_path(i, j);
-            printf("\n");
+            if(D_Floyd[i][j]!=INT_MAX)
+            {
+                printf("%c to %c: %c", G.vertex[i],G.vertex[j],G.vertex[i]);
+                Floyd_path(i,j);
+                printf("\n");
+            }
         }
     }
     return 0;
@@ -261,7 +269,7 @@ void Dijkstra_path(int source, int target)
 {
     if (D_SPF[target] == INT_MAX || source == target)
     {
-        printf("\nNO path.");
+        //printf("\n%c have no path to %c.",G.vertex[source],G.vertex[target]);
         return;
     }
     STACK s = MAKENULL_STACK();
@@ -274,7 +282,7 @@ void Dijkstra_path(int source, int target)
         PUSH(s, pre);
         pre = P_SPF[pre];
     }
-    printf("\nPath: %c", G.vertex[pre]);
+    printf("\n%c to %c: %c",G.vertex[source],G.vertex[target], G.vertex[pre]);
     while (s->next != NULL)
     {
         printf("-->%c", G.vertex[POP(s)]);
@@ -315,12 +323,12 @@ void Floyd_path(int source, int target)
 {
     if (D_Floyd[source][target] == INT_MAX)
     {
-        printf(" cannot reach %c.", G.vertex[target]);
+        //printf(" cannot reach %c.", G.vertex[target]);
         return;
     }
     if (source > G.n || target > G.n)
     {
-        printf("Wrong.\n");
+        //printf("Wrong.\n");
         return;
     }
     int k = P_Floyd[source][target];
