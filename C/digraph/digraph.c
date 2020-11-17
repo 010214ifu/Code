@@ -1,7 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<limits.h>
-//INT_MAX  INT_MIN
 #include<stdbool.h>
 #define MAX_VERTEX 100
 
@@ -10,20 +9,17 @@ typedef struct
     int sub;
     int path_length;
 }HeapNode;
-
 typedef struct
 {
     HeapNode data[MAX_VERTEX+1];
     int n;
 }HEAP;
-
 typedef struct
 {
     char vertex[MAX_VERTEX];//顶点信息
     int edge[MAX_VERTEX+1][MAX_VERTEX+1];//边信息
     int n,e;
 }MTGraph;
-
 typedef struct stack
 {
     int vertex;
@@ -82,41 +78,110 @@ Floyd可达矩阵
 int main()
 {
     CreateGraph_matrix();
-    for (int i = 1; i <= G.n; i++)
-    {
-        Dijkstra(i);
-        for (int j = 1; j <= G.n; j++)
-            Dijkstra_path(i, j);
-        printf("\n");
-    }
     Floyd();
-    for (int i = 1; i <= G.n; i++)
+    int source, target, cho = 1;
+    while (cho != 0)
     {
-        for (int j = 1; j <= G.n; j++)
+        system("cls");
+        printf("----------------------------------------------\n");
+        printf("--                   0.Quit                 --\n");
+        printf("--    1.Dijkstra from one point to others   --\n");
+        printf("--  2.Floyd matrix of the shortest distance --\n");
+        printf("--   3.Floyd pathes between any two points  --\n");
+        printf("--  4.Pathes from every point to given one  --\n");
+        printf("--             5.reachable matrix           --\n");
+        printf("--         6.Pathes between two points      --\n");
+        printf("----------------------------------------------\n");
+        printf("Which do you wanna choose? ");
+        scanf("%d", &cho);
+        switch (cho)
         {
-            if (D_Floyd[i][j] != INT_MAX)
-                printf("%d ", D_Floyd[i][j]);
-            else
-                printf("s ");
-        }
-        printf("\n");
-    }
-    Floyd_reachable_matrix();
-    for (int i = 1; i <= G.n; i++)
-    {
-        for (int j = 1; j <= G.n; j++)
-        {
-            if(D_Floyd[i][j]!=INT_MAX)
+        case 0://Quit
+            printf("Quit successfully!\n");
+            break;
+        case 1:
+            printf("Input source point:");
+            scanf("%d", &source);
+            Dijkstra(source);
+            for (int i = 1; i <= G.n; i++)
+                Dijkstra_path(source, i);
+            system("pause");
+            break;
+        case 2:
+            printf("\nMatrix of the shortest distance:\n");
+            for (int i = 1; i <= G.n; i++)
             {
-                printf("%c to %c: %c", G.vertex[i],G.vertex[j],G.vertex[i]);
-                Floyd_path(i,j);
+                for (int j = 1; j <= G.n; j++)
+                {
+                    if (D_Floyd[i][j] != INT_MAX)
+                        printf("%d ", D_Floyd[i][j]);
+                    else
+                        printf("s ");
+                }
                 printf("\n");
             }
+            system("pause");
+            break;
+        case 3:
+            printf("\nPathes between any two vertices:\n");
+            for (int i = 1; i <= G.n; i++)
+                for (int j = 1; j <= G.n; j++)
+                    if(D_Floyd[i][j]!=INT_MAX)
+                    {
+                        printf("%c to %c: %c", G.vertex[i],G.vertex[j],G.vertex[i]);
+                        Floyd_path(i,j);
+                        printf("\n");
+                    }
+            system("pause");
+            break;
+        case 4:
+            printf("Input target point:");
+            scanf("%d", &target);
+            for (int i = 1; i <= G.n; i++)
+            {
+                if(D_Floyd[i][target]!=INT_MAX)
+                {
+                    printf("%c to %c: %c", G.vertex[i],G.vertex[target],G.vertex[i]);
+                    Floyd_path(i,target);
+                    printf("\n");
+                }
+            }
+                system("pause");
+            break;
+        case 5:
+            printf("\nReachable matrix:\n");
+            Floyd_reachable_matrix();
+            system("pause");
+            break;
+        case 6:
+            printf("Input two points:");
+            scanf("%d %d", &source, &target);
+            if (D_Floyd[source][target] != INT_MAX)
+            {
+                printf("%c to %c: %c", G.vertex[source], G.vertex[target], G.vertex[source]);
+                Floyd_path(source, target);
+                printf("\n");
+            }
+            else
+                printf("%c cannot reach %c.\n", G.vertex[source], G.vertex[target]);
+            if (D_Floyd[target][source] != INT_MAX)
+            {
+                printf("%c to %c: %c", G.vertex[target], G.vertex[source], G.vertex[target]);
+                Floyd_path(target, source);
+                printf("\n");
+            }
+            else
+                printf("%c cannot reach %c.\n", G.vertex[target], G.vertex[source]);
+            system("pause");
+            break;
+        default:
+            printf("Wrong Choice! Choose again.\n");
+            system("pause");
+            break;
         }
     }
     return 0;
 }
-
 
 STACK MAKENULL_STACK( )
 {
@@ -183,7 +248,6 @@ void Insert(int sub, int path_length)
     Min_Heap.data[i].path_length = path_length;
     Min_Heap.n++;
 }
-
 int DeleteData(int k)
 {
     int parent = k, child = 2 * k, min;
@@ -206,7 +270,6 @@ int DeleteData(int k)
         return elem.sub;
     }
 }
-
 
 void CreateGraph_matrix( )
 {
@@ -264,7 +327,6 @@ void Dijkstra(int source)
         }
     }
 }
-
 void Dijkstra_path(int source, int target)
 {
     if (D_SPF[target] == INT_MAX || source == target)
@@ -317,13 +379,11 @@ void Floyd()
                 } 
             }
 }
-
-//source没输出
 void Floyd_path(int source, int target)
 {
     if (D_Floyd[source][target] == INT_MAX)
     {
-        //printf(" cannot reach %c.", G.vertex[target]);
+        printf("%c cannot reach %c.", G.vertex[source], G.vertex[target]);
         return;
     }
     if (source > G.n || target > G.n)
@@ -340,7 +400,6 @@ void Floyd_path(int source, int target)
     else
         printf("-->%c", G.vertex[target]);
 }
-
 void Floyd_reachable_matrix()
 {
     for (int i = 1; i <= G.n; i++)
