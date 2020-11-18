@@ -37,7 +37,6 @@ bool S_SPF[MAX_VERTEX + 1];
 int D_Floyd[MAX_VERTEX+1][MAX_VERTEX+1];
 int P_Floyd[MAX_VERTEX+1][MAX_VERTEX+1];
 int reachable_matrix[MAX_VERTEX+1][MAX_VERTEX+1];
-int path_Floyd[MAX_VERTEX+1][MAX_VERTEX+1];
 
 //创建空堆
 void MakeNullHeap();
@@ -67,13 +66,6 @@ void Floyd();
 void Floyd_path(int source, int target);
 //有向图可达矩阵
 void Floyd_reachable_matrix();
-/*
-Dijkstra最短路径长度和最短路径
-Floyd最短距离矩阵和最短路径矩阵，任意两个顶点最短路径长度和最短路径
-每个顶点到指定顶点c最短路径
-u到v和v到u最短路径
-Floyd可达矩阵
-*/
 
 int main()
 {
@@ -128,7 +120,7 @@ int main()
                 for (int j = 1; j <= G.n; j++)
                     if(D_Floyd[i][j]!=INT_MAX)
                     {
-                        printf("%c to %c: %c", G.vertex[i],G.vertex[j],G.vertex[i]);
+                        printf("%c to %c (%d): %c", G.vertex[i], G.vertex[j], D_Floyd[i][j],G.vertex[i]);
                         Floyd_path(i,j);
                         printf("\n");
                     }
@@ -283,9 +275,7 @@ void CreateGraph_matrix( )
         scanf("%c", &G.vertex[i]);
         getchar();
         for (j = 1; j <= G.n; j++) //初始化边表
-        {
             G.edge[i][j] = INT_MAX;
-        }
     }
     for (i = 1; i <= G.e; i++)
     {
@@ -330,10 +320,7 @@ void Dijkstra(int source)
 void Dijkstra_path(int source, int target)
 {
     if (D_SPF[target] == INT_MAX || source == target)
-    {
-        //printf("\n%c have no path to %c.",G.vertex[source],G.vertex[target]);
         return;
-    }
     STACK s = MAKENULL_STACK();
     PUSH(s, target);
     //target入栈
@@ -346,10 +333,7 @@ void Dijkstra_path(int source, int target)
     }
     printf("\n%c to %c: %c",G.vertex[source],G.vertex[target], G.vertex[pre]);
     while (s->next != NULL)
-    {
         printf("-->%c", G.vertex[POP(s)]);
-    }
-
 }
 
 void Floyd()
@@ -364,7 +348,6 @@ void Floyd()
     for (k = 1; k <= G.n; k++)
         for (i = 1; i <= G.n; i++)
             for (j = 1; j <= G.n; j++)
-            {
                 if (i != j)
                 {
                     if (D_Floyd[i][k] == INT_MAX || D_Floyd[k][j] == INT_MAX)
@@ -377,7 +360,6 @@ void Floyd()
                         P_Floyd[i][j] = k;
                     }
                 } 
-            }
 }
 void Floyd_path(int source, int target)
 {
@@ -387,10 +369,7 @@ void Floyd_path(int source, int target)
         return;
     }
     if (source > G.n || target > G.n)
-    {
-        //printf("Wrong.\n");
         return;
-    }
     int k = P_Floyd[source][target];
     if (k != -1)
     {
