@@ -21,12 +21,12 @@
 
 
 module time_counter(
-    input IsLock,
-    input clk,
-    input restart,
-    input resetting,
-    output reg [6:0]NixieTube,
-    output reg EndTime
+    input            IsLock,     // 是否上锁
+    input            clk,        // 时钟信号
+    input            restart,    // 重新开始信号
+    input            resetting,  // 重置密码信号
+    output reg [6:0] NixieTube,  // 输出七段数码管
+    output reg       EndTime     // 倒计时结束
     );
  
 reg [31:0] counter;
@@ -37,8 +37,7 @@ initial begin
 end
 
 always @(posedge clk or posedge restart) begin
-//if (!IsLock) begin
-    if(restart && !IsLock) begin
+    if((restart && !IsLock)||resetting) begin
         counter <= 32'd0;
     end
     else if (clk && !IsLock) begin
@@ -46,29 +45,25 @@ always @(posedge clk or posedge restart) begin
             counter <= counter + 32'd1;
         end
     end
-//end
 end
 
 always @(posedge clk) begin
     if (!resetting) begin
-        if( counter < 32'd100_000_000 ) NixieTube <= 7'b1111011;
-        else if( counter < 32'd200_000_000 ) NixieTube <= 7'b1111111;
-        else if( counter < 32'd300_000_000 ) NixieTube <= 7'b1110000;
-        else if( counter < 32'd400_000_000 ) NixieTube <= 7'b1011111;
-        else if( counter < 32'd500_000_000 ) NixieTube <= 7'b1011011;
-        else if( counter < 32'd600_000_000 ) NixieTube <= 7'b0110011;
-        else if( counter < 32'd700_000_000 ) NixieTube <= 7'b1111001;
-        else if( counter < 32'd800_000_000 ) NixieTube <= 7'b1101101;
-        else if( counter < 32'd900_000_000 ) NixieTube <= 7'b0110000;
+        if ( counter < 32'd100_000_000 ) NixieTube <= 7'b1111011;
+        else if ( counter < 32'd200_000_000 ) NixieTube <= 7'b1111111;
+        else if ( counter < 32'd300_000_000 ) NixieTube <= 7'b1110000;
+        else if ( counter < 32'd400_000_000 ) NixieTube <= 7'b1011111;
+        else if ( counter < 32'd500_000_000 ) NixieTube <= 7'b1011011;
+        else if ( counter < 32'd600_000_000 ) NixieTube <= 7'b0110011;
+        else if ( counter < 32'd700_000_000 ) NixieTube <= 7'b1111001;
+        else if ( counter < 32'd800_000_000 ) NixieTube <= 7'b1101101;
+        else if ( counter < 32'd900_000_000 ) NixieTube <= 7'b0110000;
         else NixieTube <= 7'b1111110;
     end
-    else begin
-        NixieTube <= 7'b0000000;
-    end
+    else NixieTube <= 7'b0000000;
 end
 
 always @(posedge clk or posedge restart) begin
-//if (!IsLock) begin
     if(restart && !IsLock) begin
         EndTime <= 0;
     end
@@ -77,7 +72,7 @@ always @(posedge clk or posedge restart) begin
             EndTime <= 1;
         end
     end
-//end
 end
 
 endmodule
+
