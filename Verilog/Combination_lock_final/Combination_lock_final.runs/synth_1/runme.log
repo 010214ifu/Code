@@ -1,0 +1,290 @@
+
+*** Running vivado
+    with args -log Main.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source Main.tcl
+
+
+
+****** Vivado v2020.1 (64-bit)
+  **** SW Build 2902540 on Wed May 27 19:54:49 MDT 2020
+  **** IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
+    ** Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+
+source Main.tcl -notrace
+Command: synth_design -top Main -part xc7a35tcsg324-3
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Device 21-403] Loading part xc7a35tcsg324-3
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 9016
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1036.820 ; gain = 0.000
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'Main' [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/Main.v:23]
+INFO: [Synth 8-6157] synthesizing module 'Comparation' [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/Comparation.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'Comparation' (1#1) [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/Comparation.v:23]
+INFO: [Synth 8-6157] synthesizing module 'time_counter' [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/Time_Counter.v:23]
+CRITICAL WARNING: [Synth 8-5413] Mix of synchronous and asynchronous control for register counter_reg in module time_counter. [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/Time_Counter.v:41]
+INFO: [Synth 8-6155] done synthesizing module 'time_counter' (2#1) [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/Time_Counter.v:23]
+INFO: [Synth 8-6157] synthesizing module 'StroboFlash' [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/StroboFlash.v:23]
+	Parameter WIDTH bound to: 16 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'StroboFlash' (3#1) [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/StroboFlash.v:23]
+INFO: [Synth 8-6157] synthesizing module 'PasswordToNum' [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/PasswordToNum.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'PasswordToNum' (4#1) [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/PasswordToNum.v:23]
+INFO: [Synth 8-6157] synthesizing module 'PasswordChange' [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/ChangePassword.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'PasswordChange' (5#1) [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/ChangePassword.v:23]
+INFO: [Synth 8-6157] synthesizing module 'Input_Password' [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/Input_Password.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'Input_Password' (6#1) [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/Input_Password.v:23]
+INFO: [Synth 8-6157] synthesizing module 'LED_Password' [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/LED_Password.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'LED_Password' (7#1) [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/LED_Password.v:23]
+INFO: [Synth 8-6157] synthesizing module 'LED_Time_Wrongtime' [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/LED_Time_Wrongtime.v:23]
+INFO: [Synth 8-226] default block is never used [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/LED_Time_Wrongtime.v:45]
+WARNING: [Synth 8-567] referenced signal 'not_work' should be on the sensitivity list [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/LED_Time_Wrongtime.v:55]
+WARNING: [Synth 8-567] referenced signal 'temp_led_time' should be on the sensitivity list [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/LED_Time_Wrongtime.v:55]
+WARNING: [Synth 8-567] referenced signal 'NumWrong_NixieTube' should be on the sensitivity list [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/LED_Time_Wrongtime.v:55]
+INFO: [Synth 8-6155] done synthesizing module 'LED_Time_Wrongtime' (8#1) [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/LED_Time_Wrongtime.v:23]
+INFO: [Synth 8-6157] synthesizing module 'Right_Wrong' [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/Right_Wrong.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'Right_Wrong' (9#1) [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/Right_Wrong.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'Main' (10#1) [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/sources_1/new/Main.v:23]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1039.332 ; gain = 2.512
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 1039.332 ; gain = 2.512
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 1039.332 ; gain = 2.512
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.010 . Memory (MB): peak = 1039.332 ; gain = 0.000
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/constrs_1/new/con_lock.xdc]
+Finished Parsing XDC File [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/constrs_1/new/con_lock.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.srcs/constrs_1/new/con_lock.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/Main_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/Main_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1146.887 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 1146.887 ; gain = 0.000
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 1146.887 ; gain = 110.066
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a35tcsg324-3
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 1146.887 ; gain = 110.066
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 1146.887 ; gain = 110.066
+---------------------------------------------------------------------------------
+INFO: [Synth 8-802] inferred FSM for state register 'DN0_K_reg' in module 'StroboFlash'
+INFO: [Synth 8-802] inferred FSM for state register 'ChangePassword_reg' in module 'PasswordChange'
+INFO: [Synth 8-802] inferred FSM for state register 'ChooseChange_reg' in module 'Input_Password'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                 iSTATE0 |                               10 |                               10
+                  iSTATE |                               01 |                               01
+*
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'DN0_K_reg' in module 'StroboFlash'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                 iSTATE0 |                             1000 |                             1000
+                 iSTATE1 |                             0100 |                             0100
+                 iSTATE2 |                             0010 |                             0010
+                  iSTATE |                             0001 |                             0001
+*
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ChangePassword_reg' in module 'PasswordChange'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                 iSTATE0 |                             1000 |                             1000
+                 iSTATE1 |                             0100 |                             0100
+                 iSTATE2 |                             0010 |                             0010
+                  iSTATE |                             0001 |                             0001
+*
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3898] No Re-encoding of one hot register 'ChooseChange_reg' in module 'Input_Password'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 1146.887 ; gain = 110.066
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input    2 Bit       Adders := 1     
++---Registers : 
+	               32 Bit    Registers := 2     
+	                8 Bit    Registers := 4     
+	                7 Bit    Registers := 9     
+	                4 Bit    Registers := 2     
+	                2 Bit    Registers := 2     
+	                1 Bit    Registers := 11    
++---Muxes : 
+	   4 Input   32 Bit        Muxes := 2     
+	   2 Input   32 Bit        Muxes := 2     
+	   2 Input    8 Bit        Muxes := 6     
+	   9 Input    7 Bit        Muxes := 5     
+	  10 Input    7 Bit        Muxes := 1     
+	  11 Input    7 Bit        Muxes := 1     
+	   4 Input    7 Bit        Muxes := 1     
+	   2 Input    7 Bit        Muxes := 1     
+	   3 Input    7 Bit        Muxes := 1     
+	   2 Input    4 Bit        Muxes := 1     
+	   4 Input    4 Bit        Muxes := 2     
+	   2 Input    2 Bit        Muxes := 1     
+	   2 Input    1 Bit        Muxes := 7     
+	   5 Input    1 Bit        Muxes := 2     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 90 (col length:60)
+BRAMs: 100 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 1146.887 ; gain = 110.066
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 1146.887 ; gain = 110.066
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 1146.887 ; gain = 110.066
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:22 ; elapsed = 00:00:22 . Memory (MB): peak = 1162.578 ; gain = 125.758
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1162.578 ; gain = 125.758
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1162.578 ; gain = 125.758
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1162.578 ; gain = 125.758
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1162.578 ; gain = 125.758
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1162.578 ; gain = 125.758
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1162.578 ; gain = 125.758
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-------+------+
+|      |Cell   |Count |
++------+-------+------+
+|1     |BUFG   |     4|
+|2     |CARRY4 |    18|
+|3     |LUT1   |     5|
+|4     |LUT2   |    29|
+|5     |LUT3   |    51|
+|6     |LUT4   |    50|
+|7     |LUT5   |    48|
+|8     |LUT6   |    89|
+|9     |FDCE   |    40|
+|10    |FDPE   |     1|
+|11    |FDRE   |   195|
+|12    |IBUF   |    13|
+|13    |OBUF   |    25|
++------+-------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1162.578 ; gain = 125.758
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:18 ; elapsed = 00:00:24 . Memory (MB): peak = 1162.578 ; gain = 18.203
+Synthesis Optimization Complete : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1162.578 ; gain = 125.758
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.007 . Memory (MB): peak = 1171.789 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 18 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1176.176 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+INFO: [Common 17-83] Releasing license: Synthesis
+42 Infos, 3 Warnings, 1 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:30 ; elapsed = 00:00:32 . Memory (MB): peak = 1176.176 ; gain = 139.355
+INFO: [Common 17-1381] The checkpoint 'D:/Software/Vivado/programs/Combination_lock_final/Combination_lock_final.runs/synth_1/Main.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file Main_utilization_synth.rpt -pb Main_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Fri Dec 18 16:53:41 2020...
